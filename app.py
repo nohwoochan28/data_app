@@ -1,5 +1,5 @@
 import streamlit as st
-add_selectbox = st.sidebar.selectbox("후보들", ("김민성", "나규승", "조현육", "박요한", "조서현"))
+add_selectbox = st.sidebar.selectbox("후보들", ("김민성", "나규승", "조현욱", "박요한", "조서현"))
 # def main():
 st.title("증권거래소")
 st.header("2023년 5월 3일")
