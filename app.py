@@ -1,21 +1,17 @@
 import streamlit as st
-
+add_selectbox = st.sidebar.selectbox("후보들", ("김민성", "나규승", "조현육", "박요한", "조서현"))
 # def main():
 st.title("증권거래소")
-st.header("2023년 5월 2일")
+st.header("2023년 5월 3일")
 col1, col2, col3, col4, col5 = st.columns(5)
-col1.metric("김민성", "67%", "-3%")
-col2.metric("나규승", "25%", "5%")
-col3.metric("조현욱", "2%", "0%")
-col4.metric("박요한", "4%", "-1%")
-col5.metric("조서현", "2%", "-1%")
-# st.subheader("This is subheader")
+col1.metric("김민성", "77.5%", "0.5%")
+col1.text("현재 가장 유력한 후보이다. 없는 질문도 만들어서 질문하는 그의 이름 김정배!")
+col2.metric("나규승", "16%", "1%")
+col2.text("일요일 데이트와 같이하는 수많은 대회...규승이의 성장가능성은 무궁무진하다.")
+col3.metric("조현욱", "0.5%", "-1.5%")
+col3.text("현욱이는 슬프다....그냥 슬프다...조만간 상장 폐지가 유력하다....")
+col4.metric("박요한", "4%", "0%")
+col4.text("그냥 로리콘이다 그는 이제 자포자기하고 자학개그를 하고있다.")
+col5.metric("조서현", "2%", "0%")
+col5.text("솔직히 그냥 억까다. 근데 알빠노?")
 st.text("*무단배포를 절대 금지합니다")
-# name = '이설민'
-# st.text(f'Hi, {name}')
-# st.write("Streamlit study course")
-# st.markdown("## 매우중요")
-# st.success('설보민지')
-
-# if __name__ == '__main__':
-#     main()
