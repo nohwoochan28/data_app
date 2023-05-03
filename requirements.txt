@@ -1,7 +1,11 @@
 #requirements.txt
-git+https://github.com/googleapis/google-auth-library-python-httplib2#egg=googleapis/google-auth-library-python-httplib2
+#git+https://github.com/googleapis/google-auth-library-python-httplib2#egg=googleapis/google-auth-library-python-httplib2
 
-git+https://github.com/googleapis/google-auth-library-python-httplib2
-altair==4.2.0
-attrs==22.1.0
-blinker==1.5
+#git+https://github.com/googleapis/google-auth-library-python-httplib2
+#altair==4.2.0
+#attrs==22.1.0
+#blinker==1.5
+
+google-api-python-client==1.6.4
+google-auth==1.2.0
+google-auth-httplib2==0.0.2
