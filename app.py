@@ -1,4 +1,4 @@
-import google_auth_httplib2
+from googleapis import google_auth_httplib2
 import httplib2
 import pandas as pd
 import streamlit as st
@@ -60,7 +60,7 @@ if check_password():
     col3.metric("조현욱", "0.5%", "-1.5%")
     col4.metric("박요한", "4%", "0%")
     col5.metric("조서현", "2%", "0%")
-    st.text("*무단배포를 절대 금지합니다")
+    st.markdown("*무단배포를 절대 금지합니다")
     st.header("주식 소개")
     st.subheader("김민성")
     st.markdown("현재 가장 유력한 후보이다. 없는 질문도 만들어서 질문하는 그의 이름 김정배!")
