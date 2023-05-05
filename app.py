@@ -14,6 +14,11 @@ SPREADSHEET_ID = "1hoWLJJsiCcic77qyiAAGsxlrW2seaW9D3aUBY8JbldI"
 SHEET_NAME = "Database"
 GSHEET_URL = f"https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}"
 
+COMMENT_TEMPLATE_MD = """{} - {}
+> {}"""
+def space(num_lines=1):
+    for _ in range(num_lines):
+        st.write("")
 
 # def check_password():
 #     """Returns `True` if the user had a correct password."""
@@ -140,7 +145,32 @@ def get_data2(gsheet_connector) -> pd.DataFrame:
     df2.columns = df2.iloc[0]
     df2 = df2[1:]
     return df2
+def get_data3(gsheet_connector) -> pd.DataFrame:
+    values = (
+        gsheet_connector.values()
+        .get(
+            spreadsheetId=SPREADSHEET_ID,
+            range=f"{SHEET_NAME}!L:N",
+        )
+        .execute()
+    )
 
+    df3 = pd.DataFrame(values["values"])
+    df3.columns = df3.iloc[0]
+    df3 = df3[1:]
+    return df3
+
+def insert(gsheet_connector, row) -> None:
+    values = (
+        gsheet_connector.values()
+        .append(
+            spreadsheetId=SPREADSHEET_ID,
+            range=f"{SHEET_NAME}!L:N",
+            body=dict(values=row),
+            valueInputOption="USER_ENTERED",
+        )
+        .execute()
+    )
 with form:
     colors = ['#d2453f', '#1793d0', '#65d34f', '#f6a616', '#ebe614']
     fig2 = px.pie(get_data2(gsheet_connector), names='can', values='vot', title='코인 지지율')
@@ -168,6 +198,49 @@ expander = st.expander("주식투자 기록보기")
 with expander:
     st.write(f"원본 보기 [Google Sheet]({GSHEET_URL})")
     st.dataframe(get_data(gsheet_connector))
+
+
+
+with st.expander("💬 토론방 열기"):
+
+    # Show comments
+
+    st.write("**토론방:**")
+
+    for index, entry in enumerate(get_data3(gsheet_connector).itertuples()):
+        st.markdown(COMMENT_TEMPLATE_MD.format(entry.name, entry.date, entry.comment))
+
+        is_last = index == len(get_data3(gsheet_connector)) - 1
+        is_new = "just_posted" in st.session_state and is_last
+        if is_new:
+            st.success("☝️ 댓글 작성완료!")
+
+
+    space(2)
+
+    st.write("**의견을 작성하세요:**")
+    form2 = st.form("comment")
+    name = form2.text_input("이름")
+    comment = form2.text_area("의견")
+    submit = form2.form_submit_button("의견 등록")
+    # gsheet_connector   connect_to_gsheet()
+    if submit:
+        date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+        insert(gsheet_connector, [[name, comment, date]])
+        if "just_posted" not in st.session_state:
+            st.session_state["just_posted"] = True
+        st.experimental_rerun()
+    # if submit:
+    #     date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    #     add_row_to_gsheet(
+    #         gsheet_connector,
+    #         [[name, comment, date]],
+    #     )
+        # if "just_posted" not in st.session_state:
+        #     st.session_state["just_posted"] = True
+        # st.experimental_rerun()
+        st.success("댓글 등록성공")
+        st.balloons()
 
 st.header("코인 소개")
 st.subheader("김민성")
