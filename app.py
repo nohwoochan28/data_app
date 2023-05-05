@@ -8,7 +8,7 @@ from googleapiclient.http import HttpRequest
 import plotly.express as px
 from datetime import datetime
 
-st.set_page_config(page_title="Catfish stock 1.1.6", page_icon="🐰", layout="centered")
+st.set_page_config(page_title="Catfish stock 1.1.7", page_icon="🐰", layout="centered")
 SCOPE = "https://www.googleapis.com/auth/spreadsheets"
 SPREADSHEET_ID = "1hoWLJJsiCcic77qyiAAGsxlrW2seaW9D3aUBY8JbldI"
 SHEET_NAME = "Database"
