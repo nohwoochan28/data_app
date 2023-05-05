@@ -8,7 +8,7 @@ from googleapiclient.http import HttpRequest
 import plotly.express as px
 from datetime import datetime
 
-st.set_page_config(page_title="Catfish stock 1.1.7", page_icon="🐰", layout="centered")
+st.set_page_config(page_title="Catfish stock 1.1.8", page_icon="🐰", layout="centered")
 SCOPE = "https://www.googleapis.com/auth/spreadsheets"
 SPREADSHEET_ID = "1hoWLJJsiCcic77qyiAAGsxlrW2seaW9D3aUBY8JbldI"
 SHEET_NAME = "Database"
@@ -57,7 +57,7 @@ def space(num_lines=1):
 #
 #
 # if check_password():
-add_selectbox = st.sidebar.selectbox("후보들", ("김민성", "나규승", "조현욱", "박요한", "조서현"))
+add_selectbox = st.sidebar.selectbox("후보들", ("김민성", "나규승", "조현욱", "박요한", "조서현", "이용현"))
 # def main():
 # st.title("증권거래소")
 # st.header("2023년 5월 4일")
@@ -179,7 +179,7 @@ with form:
     cols = st.columns((1, 1))
     author = cols[0].text_input("구매자:")
     bug_type = cols[1].selectbox(
-        "구매할 코인:", ["김민성", "나규승", "조현욱", "박요한", "조서현"], index=2
+        "구매할 코인:", ["김민성", "나규승", "조현욱", "박요한", "조서현", "이용현"], index=2
     )
     comment = st.text_area("코멘트:")
     cols = st.columns(2)
@@ -255,3 +255,12 @@ st.subheader("박요한")
 st.markdown("그냥 로리콘이다 그는 이제 자포자기하고 자학개그를 하고있다.조서현의 강력한 지지를 받고 있다.")
 st.subheader("조서현")
 st.markdown("솔직히 그냥 억까다. 근데 알빠노? 하지만 슬슬 억까가 아닌거같다. 앞으로의 행보를 기대해보자!")
+st.subheader("이용현")
+st.markdown("준비중입니다")
+space(4)
+st.subheader("[패치노트]")
+st.markdown("[1.1.6]\n -Catfishstock에 지지율 기능이 생겼습니다.\n -기존에 있던 코인 구매하기 기능을 이용해 코인을 구매하면 이를 실시간으로 반영해 코인지지율이 올라갑니다. \n -코인 소개 목차가 코인구매 기능 밑으로 내려갔습니다.\n -코인구매 기능중 날짜 체크 기능을 제거했습니다.")
+space(1)
+st.markdown("[1.1.7]\n -Catfishstock에 커뮤니티 기능이 생겼습니다! 토론방에 들어가 코인에 대한 자신의 의견을 남겨보세요!")
+space(1)
+st.markdown("[1.1.8]\n -이용현 코인이 새롭게 상장되었습니다. 많은 관심 부탁드립니다!")
