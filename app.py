@@ -118,7 +118,7 @@ def get_data(gsheet_connector) -> pd.DataFrame:
 def add_row_to_gsheet(gsheet_connector, row) -> None:
     gsheet_connector.values().append(
         spreadsheetId=SPREADSHEET_ID,
-        range=f"{SHEET_NAME}!A:D",
+        range=f"{SHEET_NAME}!A:E",
         body=dict(values=row),
         valueInputOption="USER_ENTERED",
     ).execute()
@@ -188,9 +188,10 @@ with form:
     submitted = st.form_submit_button(label="제출")
 
 if submitted:
+    date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     add_row_to_gsheet(
         gsheet_connector,
-        [[author, bug_type, comment, bug_severity]],
+        [[author, bug_type, comment, bug_severity, date]],
     )
     st.success("친구들이 기뻐할거야!")
     st.balloons()
