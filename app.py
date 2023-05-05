@@ -128,6 +128,7 @@ st.subheader(datetime.today().strftime("%Y/%m/%d %H:%M:%S"))
 st.markdown("*무단배포를 절대 금지합니다")
 st.text("\n\n")
 st.header("코인구매")
+st.markdown("시세조작을 시도할 경우 구매취소 및 제재가 이루어질 수 있습니다.")
 gsheet_connector = connect_to_gsheet()
 
 form = st.form(key="annotation")
