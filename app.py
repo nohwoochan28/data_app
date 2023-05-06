@@ -196,7 +196,7 @@ if submitted:
     st.success("친구들이 기뻐할거야!")
     st.balloons()
 
-expander = st.expander("주식투자 기록보기")
+expander = st.expander("📈 주식투자 기록보기")
 with expander:
     st.write(f"원본 보기 [Google Sheet]({GSHEET_URL})")
     st.dataframe(get_data(gsheet_connector))
