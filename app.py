@@ -176,10 +176,8 @@ with form:
     colors = ['#d2453f', '#1793d0', '#65d34f', '#f6a616', '#ebe614']
     fig2 = px.pie(get_data2(gsheet_connector), names='can', values='vot', title='코인 지지율')
     st.plotly_chart(fig2)
-    # fig3 = pd(get_data4(gsheet_connector), x='can', y='vot', width=0, height=0, use_container_width = True, title='코인 지지율2')
-    # st.line_chart(fig3)
     cols = st.columns((1, 1))
-    author = cols[0].text_input("구매자(임창정 경고 1회):")
+    author = cols[0].text_input("구매자(임창정 경고 2회):")
     bug_type = cols[1].selectbox(
         "구매할 코인:", ["김민성", "나규승", "조현욱", "박요한", "조서현", "이용현"], index=2
     )
