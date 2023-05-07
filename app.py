@@ -177,7 +177,7 @@ with form:
     fig2 = px.pie(get_data2(gsheet_connector), names='can', values='vot', title='코인 지지율')
     st.plotly_chart(fig2)
     cols = st.columns((1, 1))
-    author = cols[0].text_input("구매자:")
+    author = cols[0].text_input("구매자(임창정 경고 1회):")
     bug_type = cols[1].selectbox(
         "구매할 코인:", ["김민성", "나규승", "조현욱", "박요한", "조서현", "이용현"], index=2
     )
