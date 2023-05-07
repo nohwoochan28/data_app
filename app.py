@@ -186,7 +186,7 @@ with form:
     # date = cols[0].date_input("언제있었던 일인가요?:")
     bug_severity = st.slider("구매할 수량:", 1, 5, 2)
     submitted = st.form_submit_button(label="제출")
-
+#
 if submitted:
     date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     add_row_to_gsheet(
