@@ -184,7 +184,7 @@ with form:
     comment = st.text_area("코멘트:")
     cols = st.columns(2)
     # date = cols[0].date_input("언제있었던 일인가요?:")
-    bug_severity = st.slider("구매할 수량:", 1, 5, 2)
+    bug_severity = st.slider("구매할 수량:", 1, 7, 3)
     submitted = st.form_submit_button(label="제출")
 #
 if submitted:
