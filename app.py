@@ -189,7 +189,7 @@ with form:
     submitted = st.form_submit_button(label="제출")
 #
 if submitted:
-    date = datetime.now().strftime("%Y.%m.%d")
+    date = datetime.now().strftime("%d.%m.%Y")
     add_row_to_gsheet(
         gsheet_connector,
         [[author, bug_type, comment, bug_severity, date]],
