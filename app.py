@@ -8,7 +8,7 @@ from googleapiclient.http import HttpRequest
 import plotly.express as px
 from datetime import datetime
 
-st.set_page_config(page_title="Catfish stock 1.1.8", page_icon="🐰", layout="centered")
+st.set_page_config(page_title="Catfish stock 1.2.0", page_icon="🐰", layout="centered")
 SCOPE = "https://www.googleapis.com/auth/spreadsheets"
 SPREADSHEET_ID = "1hoWLJJsiCcic77qyiAAGsxlrW2seaW9D3aUBY8JbldI"
 SHEET_NAME = "Database"
@@ -19,7 +19,84 @@ COMMENT_TEMPLATE_MD = """{} - {}
 def space(num_lines=1):
     for _ in range(num_lines):
         st.write("")
+import streamlit as st
+import pandas as pd
 
+
+# Security
+#passlib,hashlib,bcrypt,scrypt
+import hashlib
+def make_hashes(password):
+    return hashlib.sha256(str.encode(password)).hexdigest()
+
+def check_hashes(password,hashed_text):
+	if make_hashes(password) == hashed_text:
+		return hashed_text
+	return False
+# DB Management
+import sqlite3
+conn = sqlite3.connect('data.db')
+c = conn.cursor()
+# DB  Functions
+def create_usertable():
+	c.execute('CREATE TABLE IF NOT EXISTS userstable(username TEXT,password TEXT)')
+
+
+def add_userdata(username,password):
+	c.execute('INSERT INTO userstable(username,password) VALUES (?,?)',(username,password))
+	conn.commit()
+
+def login_user(username,password):
+    c.execute('SELECT * FROM userstable WHERE username =? AND password = ?',(username,password))
+    data = c.fetchall()
+    return data
+
+
+def view_all_users():
+	c.execute('SELECT * FROM userstable')
+	data = c.fetchall()
+	return data
+
+
+username = "-"
+def main():
+    global username
+    menu = ["Login","SignUp"]
+    choice = st.sidebar.selectbox("메뉴",menu)
+
+
+    if choice == "Login":
+        username = st.sidebar.text_input("User Name")
+        password = st.sidebar.text_input("Password",type='password')
+        if st.sidebar.checkbox("Login"):
+
+            create_usertable()
+            hashed_pswd = make_hashes(password)
+            result = login_user(username,check_hashes(password,hashed_pswd))
+            if result:
+                st.success("Logged In as {}".format(username))
+            else:
+                st.warning("Incorrect Username/Password")
+
+
+
+
+
+    elif choice == "SignUp":
+        st.subheader("계정 만들기")
+        new_user = st.text_input("Username")
+        new_password = st.text_input("Password",type='password')
+
+        if st.button("Signup"):
+            create_usertable()
+            add_userdata(new_user,make_hashes(new_password))
+            st.success("계정을 성공적으로 만들었습니다!")
+            st.info("로그인 창에서 로그인하기")
+
+
+
+if __name__ == '__main__':
+	main()
 # def check_password():
 #     """Returns `True` if the user had a correct password."""
 #
@@ -174,12 +251,12 @@ def insert(gsheet_connector, row) -> None:
         .execute()
     )
 with form:
+    global usermane
     colors = ['#d2453f', '#1793d0', '#65d34f', '#f6a616', '#ebe614']
     fig2 = px.pie(get_data2(gsheet_connector), names='can', values='vot', title='코인 지지율')
     st.plotly_chart(fig2)
     cols = st.columns((1, 1))
-    author = cols[0].text_input("구매자(임창정 경고 2회):")
-    bug_type = cols[1].selectbox(
+    bug_type = st.selectbox(
         "구매할 코인:", ["김민성", "나규승", "조현욱", "박요한", "조서현", "이용현"], index=2
     )
     comment = st.text_area("코멘트:")
@@ -192,7 +269,7 @@ if submitted:
     date = datetime.now().strftime("%d.%m.%Y")
     add_row_to_gsheet(
         gsheet_connector,
-        [[author, bug_type, comment, bug_severity, date]],
+        [[username, bug_type, comment, bug_severity, date]],
     )
     st.success("친구들이 기뻐할거야!")
     st.balloons()
@@ -205,11 +282,11 @@ with expander:
 
 
 with st.expander("💬 토론방 열기"):
-
     # Show comments
 
     st.write("**토론방:**")
 
+    # global username
     for index, entry in enumerate(get_data3(gsheet_connector).itertuples()):
         st.markdown(COMMENT_TEMPLATE_MD.format(entry.name, entry.date, entry.comment))
 
@@ -229,7 +306,7 @@ with st.expander("💬 토론방 열기"):
     # gsheet_connector   connect_to_gsheet()
     if submit:
         date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        insert(gsheet_connector, [[name, comment, date]])
+        insert(gsheet_connector, [[username, comment, date]])
         if "just_posted" not in st.session_state:
             st.session_state["just_posted"] = True
         st.experimental_rerun()
