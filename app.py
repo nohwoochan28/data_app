@@ -7,8 +7,9 @@ from googleapiclient.discovery import build
 from googleapiclient.http import HttpRequest
 import plotly.express as px
 from datetime import datetime
+# import altair as alt
 
-st.set_page_config(page_title="Catfish stock 1.2.0", page_icon="🐰", layout="centered")
+st.set_page_config(page_title="Catfish stock 1.2.1", page_icon="🐰", layout="centered")
 SCOPE = "https://www.googleapis.com/auth/spreadsheets"
 SPREADSHEET_ID = "1hoWLJJsiCcic77qyiAAGsxlrW2seaW9D3aUBY8JbldI"
 SHEET_NAME = "Database"
@@ -66,9 +67,10 @@ def main():
 
 
     if choice == "Login":
+        st.sidebar.subheader("로그인 하기")
         username = st.sidebar.text_input("User Name")
         password = st.sidebar.text_input("Password",type='password')
-        if st.sidebar.checkbox("Login"):
+        if st.sidebar.button("Login"):
 
             create_usertable()
             hashed_pswd = make_hashes(password)
@@ -83,11 +85,11 @@ def main():
 
 
     elif choice == "SignUp":
-        st.subheader("계정 만들기")
-        new_user = st.text_input("Username")
-        new_password = st.text_input("Password",type='password')
+        st.sidebar.subheader("계정 만들기")
+        new_user = st.sidebar.text_input("Username")
+        new_password = st.sidebar.text_input("Password",type='password')
 
-        if st.button("Signup"):
+        if st.sidebar.button("Signup"):
             create_usertable()
             add_userdata(new_user,make_hashes(new_password))
             st.success("계정을 성공적으로 만들었습니다!")
@@ -202,6 +204,7 @@ def add_row_to_gsheet(gsheet_connector, row) -> None:
 
 st.title("증권거래소")
 st.subheader(datetime.today().strftime("%Y/%m/%d %H:%M:%S"))
+# st.subheader(datetime.today().strftime("%Y/%m/%d %H:%M:%S"))
 st.markdown("*무단배포를 절대 금지합니다")
 st.text("\n\n")
 st.header("코인구매")
@@ -238,6 +241,21 @@ def get_data3(gsheet_connector) -> pd.DataFrame:
     df3 = df3[1:]
     return df3
 
+def get_data4(gsheet_connector) -> pd.DataFrame:
+    values = (
+        gsheet_connector.values()
+        .get(
+            spreadsheetId=SPREADSHEET_ID,
+            range=f"{SHEET_NAME}!X:AD",
+        )
+        .execute()
+    )
+
+    df4 = pd.DataFrame(values["values"])
+    df4.columns = df4.iloc[0]
+    df4 = df4[1:]
+    return df4
+
 
 def insert(gsheet_connector, row) -> None:
     values = (
@@ -255,6 +273,11 @@ with form:
     colors = ['#d2453f', '#1793d0', '#65d34f', '#f6a616', '#ebe614']
     fig2 = px.pie(get_data2(gsheet_connector), names='can', values='vot', title='코인 지지율')
     st.plotly_chart(fig2)
+    space(1)
+    line_fig = px.line(get_data4(gsheet_connector),
+                       x='날짜', y=['김민성', '나규승', '조현욱', '박요한', '조서현', '이용현'],
+                       title='지지율 변화')
+    st.plotly_chart(line_fig)
     cols = st.columns((1, 1))
     bug_type = st.selectbox(
         "구매할 코인:", ["김민성", "나규승", "조현욱", "박요한", "조서현", "이용현"], index=2
@@ -266,7 +289,7 @@ with form:
     submitted = st.form_submit_button(label="제출")
 #
 if submitted:
-    date = datetime.now().strftime("%d.%m.%Y")
+    date = datetime.now().strftime("%Y/%m/%d")
     add_row_to_gsheet(
         gsheet_connector,
         [[username, bug_type, comment, bug_severity, date]],
@@ -344,3 +367,7 @@ space(1)
 st.markdown("[1.1.8]\n -이용현 코인이 새롭게 상장되었습니다. 많은 관심 부탁드립니다! \n -사이트 하단에 패치노트 항목이 추가되었습니다.")
 space(1)
 st.markdown("[1.1.9]\n -최대 구매가능한 코인이 5개에서 7개로 증가했습니다.")
+space(1)
+st.markdown("[1.2.0]-로그인 베타 버전이 오픈했습니다! 이제부터는 코인 구매자의 이름이 없어지고 코인 구매시 아이디 실명제가 도입됩니다. 동일한 아이디로 반복 구매를 하면 계정을 삭제시킬 수 있다는 점을 주의해주세요! -놀랍게도 로그아웃 기능은 아직 구현되지 않았습니다. -접근성을 극대화 하기위해 로그인을 하지않고도 코인을 구매할 수는 있으나 코인구매시 구매자의 칸이 빈칸으로 기입됩니다")
+space(1)
+st.markdown("")
